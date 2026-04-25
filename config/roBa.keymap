@@ -120,10 +120,10 @@
 
         default_layer {
             bindings = <
-&kp Q             &kp W         &kp E             &kp R                   &kp T                                                       &kp Y        &kp U    &kp I                   &kp O     &kp P
-&kp A             &kp S         &kp D             &kp F                   &kp G        &kp LS(LG(S))                   &kp MINUS      &kp H        &kp J    &hold_mkp_tap_kp MB3 K  &kp L     &kp SLASH
-&mt LEFT_SHIFT Z  &kp X         &kp C             &kp V                   &kp B        &kp COLON                       &kp SEMICOLON  &kp N        &lt 5 M  &mkp MB1                &mkp MB2  &mt RIGHT_SHIFT PERIOD
-&mt LCTRL ESC     &kp LEFT_WIN  &mt LEFT_ALT DEL  &lt_to_layer_0 4 MINUS  &lt 1 SPACE  &lt_to_layer_0 3 JP_HANZEN      &kp BACKSPACE  &lt 2 ENTER                                             &kp COMMA
+&kp Q             &kp W         &kp E             &kp R                   &kp T                                                       &kp Y        &kp U    &kp I       &kp O      &kp P
+&kp A             &kp S         &kp D             &kp F                   &kp G        &kp LS(LG(S))                   &kp MINUS      &kp H        &kp J    &kp K       &kp L      &kp SLASH
+&mt LEFT_SHIFT Z  &kp X         &kp C             &kp V                   &kp B        &kp COLON                       &kp SEMICOLON  &kp N        &lt 5 M  &kp PERIOD  &kp COMMA  &mt RIGHT_SHIFT PAGE_UP
+&mt LCTRL ESC     &kp LEFT_WIN  &mt LEFT_ALT DEL  &lt_to_layer_0 4 MINUS  &lt 1 SPACE  &lt_to_layer_0 3 JP_HANZEN      &kp BACKSPACE  &lt 2 ENTER                                  &kp PAGE_DOWN
             >;
 
             sensor-bindings = <&inc_dec_kp PG_UP PAGE_DOWN>;
@@ -162,7 +162,7 @@
             bindings = <
 &trans  &trans  &trans  &trans  &trans                      &trans  &trans    &trans    &trans    &trans
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
+&trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &mo 5
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                                &trans
             >;
         };
