@@ -131,7 +131,7 @@
 
         FUNCTION {
             bindings = <
-&kp RA(TAB)    &kp F2           &kp F5          &kp JP_QUOTE &kp JP_AT                         &kp JP_LPAREN         &kp JP_LPAREN  &kp HOME       &kp END  &kp F10
+&kp RA(TAB)    &kp F2           &kp F5          &kp JP_QUOTE &kp JP_AT                         &kp JP_LPAREN         &kp JP_RPAREN  &kp HOME       &kp END  &kp F10
 &kp LS(LG(S))  &kp EXCLAMATION  &kp QUESTION    &kp JP_PIPE  &kp HASH     &trans      &kp F13  &kp JP_LBRACE         &kp JP_RBRACE        &kp PAGE_UP    &kp TAB  &kp JP_UNDERSCORE
 &kp JP_PLUS    &kp MINUS        &kp JP_ASTERISK &kp SLASH    &gresc       &trans      &trans   &kp JP_LBRACKET       &kp JP_RBRACKET      &kp PAGE_DOWN  &kp F11  &kp F8
 &kp LCTRL      &kp JP_CARET     &kp HASH        &trans       &trans       &trans      &trans   &trans                                                               &kp LC(LA(DEL))
