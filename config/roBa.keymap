@@ -82,7 +82,7 @@
 
         tab_del {
             bindings = <&kp LC(F4)>;
-            key-positions = <31 32>;
+            key-positions = <19 20>;
         };
 
         sl- {
