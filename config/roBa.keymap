@@ -131,10 +131,10 @@
 
         FUNCTION {
             bindings = <
-&kp RA(TAB)    &kp F2           &kp F5        &kp SQT    &kp AT_SIGN                       &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS  &kp HOME       &kp END  &kp F10
-&kp LS(LG(S))  &kp EXCLAMATION  &kp QUESTION  &kp PIPE   &kp HASH     &trans      &kp F13  &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp PAGE_UP    &kp TAB  &kp JP_UNDERSCORE
-&kp PLUS       &kp MINUS        &kp ASTERISK  &kp SLASH  &gresc       &trans      &trans   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp PAGE_DOWN  &kp F11  &kp F8
-&kp LCTRL      &kp CARET        &kp HASH      &trans     &trans       &trans      &trans   &trans                                                               &kp LC(LA(DEL))
+&kp RA(TAB)    &kp F2           &kp F5          &kp SQT    &kp AT_SIGN                       &kp JP_LPAREN         &kp JP_LPAREN  &kp HOME       &kp END  &kp F10
+&kp LS(LG(S))  &kp EXCLAMATION  &kp QUESTION    &kp PIPE   &kp HASH     &trans      &kp F13  &kp LEFT_BRACE        &kp RIGHT_BRACE        &kp PAGE_UP    &kp TAB  &kp JP_UNDERSCORE
+&kp PLUS       &kp MINUS        &kp JP_ASTERISK &kp SLASH  &gresc       &trans      &trans   &kp LEFT_BRACKET      &kp RIGHT_BRACKET      &kp PAGE_DOWN  &kp F11  &kp F8
+&kp LCTRL      &kp CARET        &kp HASH        &trans     &trans       &trans      &trans   &trans                                                               &kp LC(LA(DEL))
             >;
         };
 
