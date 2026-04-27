@@ -84,6 +84,11 @@
             bindings = <&kp LC(F4)>;
             key-positions = <31 32>;
         };
+
+        sl- {
+            bindings = <&sl 5>;
+            key-positions = <31 32>;
+        };
     };
 
     macros {
