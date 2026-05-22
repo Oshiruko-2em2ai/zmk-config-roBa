@@ -2,33 +2,33 @@
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/pointing.h>
-#include <input/processors.dtsi>  // ★ 追加：ZMK Input Processors
+#include <input/processors.dtsi>  // ★ ZMK Input Processors を使う
 
 // OS設定を日本語キーボードのまま使用するための変換定義
 
-#define JP_DQUOTE       AT                // "
-#define JP_AMPERSAND    CARET             // &
-#define JP_QUOTE        AMPERSAND         // '
-#define JP_EQUAL        UNDER             // =
-#define JP_CARET        EQUAL             // ^
-#define JP_YEN          0x89              // ¥
-#define JP_PLUS         COLON             // +
-#define JP_TILDE        PLUS              // ~
-#define JP_PIPE         LS(0x89)          // |
-#define JP_AT           LEFT_BRACKET      // @
-#define JP_COLON        SINGLE_QUOTE      // :
-#define JP_ASTERISK     DOUBLE_QUOTES     // *
-#define JP_BACKQUOTE    LEFT_BRACE        // `
-#define JP_UNDERSCORE   LS(0x87)          // _
-#define JP_LBRACKET     RIGHT_BRACKET     // [
-#define JP_RBRACKET     BACKSLASH         // ]
-#define JP_LPAREN       ASTERISK          // (
-#define JP_RPAREN       LEFT_PARENTHESIS  // )
-#define JP_LBRACE       RIGHT_BRACE       // {
-#define JP_RBRACE       PIPE              // }
-#define JP_KANA         LANGUAGE_1        // かな
-#define JP_EISU         LANGUAGE_2        // 英数
-#define JP_HANZEN       GRAVE             // 半角/全角
+#define JP_DQUOTE       AT
+#define JP_AMPERSAND    CARET
+#define JP_QUOTE        AMPERSAND
+#define JP_EQUAL        UNDER
+#define JP_CARET        EQUAL
+#define JP_YEN          0x89
+#define JP_PLUS         COLON
+#define JP_TILDE        PLUS
+#define JP_PIPE         LS(0x89)
+#define JP_AT           LEFT_BRACKET
+#define JP_COLON        SINGLE_QUOTE
+#define JP_ASTERISK     DOUBLE_QUOTES
+#define JP_BACKQUOTE    LEFT_BRACE
+#define JP_UNDERSCORE   LS(0x87)
+#define JP_LBRACKET     RIGHT_BRACKET
+#define JP_RBRACKET     BACKSLASH
+#define JP_LPAREN       ASTERISK
+#define JP_RPAREN       LEFT_PARENTHESIS
+#define JP_LBRACE       RIGHT_BRACE
+#define JP_RBRACE       PIPE
+#define JP_KANA         LANGUAGE_1
+#define JP_EISU         LANGUAGE_2
+#define JP_HANZEN       GRAVE
 
 &mt {
     flavor = "balanced";
@@ -36,27 +36,40 @@
 };
 
 &trackball {
-    // 旧AMLは無効化して、ZIPで制御する
+    // AML は使わず ZIP 側で制御する
     // automouse-layer = <4>;
     // scroll-layers = <5>;
 };
 
 / {
-    // ★ ZIP版AML：ポインタ移動でLayer4に入り、長時間維持
+    // movement → Layer4 に入る（AML相当）
     trackball_listener: trackball_listener {
         compatible = "zmk,input-listener";
         status = "okay";
         device = <&trackball>;
 
-        // ポインタ入力が来たら一時的にレイヤー4(MOUSE)を有効化
-        // 600000ms = 10分（実質「マウスキー押すまで維持」に近づける）
+        // movement で Layer4 を有効化
+        // timeout は短めでOK（マウスキー押下で延命されるため）
         input-processors = <&zip_temp_layer 4 600000>;
 
-        // Layer5(SCROLL)が有効なときはXY→スクロールに変換（元のscroll-layers相当）
+        // Layer5 では XY → スクロールに変換（元 scroll-layers 相当）
         scroller {
             layers = <5>;
             input-processors = <&zip_xy_to_scroll_mapper>;
         };
+    };
+
+    // ★ マウスキー押下 → 1秒後に Layer0 に戻る
+    //    押されるたびにタイマーがリセットされる
+    mouse_exit_listener: mouse_exit_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+
+        // マウスボタンイベントを対象にする
+        input-events = <ZMK_INPUT_EVENT_MOUSE_BUTTON>;
+
+        // 押されるたびに 1000ms 後に Layer0 をアクティブにする
+        input-processors = <&zip_delayed_layer 0 1000>;
     };
 
     combos {
@@ -105,28 +118,6 @@
             bindings = <&to 0 &macro_param_1to1 &kp MACRO_PLACEHOLDER>;
             label = "TO_LAYER_0";
         };
-
-        // ★ マウスクリック＋Layer0へ戻るマクロ（MB1/MB2/MB3）
-        mouse1_click_exit: mouse1_click_exit {
-            compatible = "zmk,behavior-macro";
-            label = "MOUSE1_CLICK_EXIT";
-            #binding-cells = <0>;
-            bindings = <&mkp MB1>, <&to 0>;
-        };
-
-        mouse2_click_exit: mouse2_click_exit {
-            compatible = "zmk,behavior-macro";
-            label = "MOUSE2_CLICK_EXIT";
-            #binding-cells = <0>;
-            bindings = <&mkp MB2>, <&to 0>;
-        };
-
-        mouse3_click_exit: mouse3_click_exit {
-            compatible = "zmk,behavior-macro";
-            label = "MOUSE3_CLICK_EXIT";
-            #binding-cells = <0>;
-            bindings = <&mkp MB3>, <&to 0>;
-        };
     };
 
     behaviors {
@@ -134,7 +125,6 @@
             compatible = "zmk,behavior-hold-tap";
             label = "LAYER_TAP_TO_0";
             bindings = <&mo>, <&to_layer_0>;
-
             #binding-cells = <2>;
             tapping-term-ms = <200>;
         };
@@ -143,7 +133,6 @@
             compatible = "zmk,behavior-hold-tap";
             label = "HOLD_MKP_TAP_KP";
             bindings = <&mkp>, <&kp>;
-
             #binding-cells = <2>;
             tapping-term-ms = <200>;
         };
@@ -195,9 +184,9 @@
         MOUSE {
             bindings = <
                 &trans  &trans  &trans  &trans  &trans                      &trans  &trans    &trans    &trans    &trans
-                &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mouse1_click_exit  &mouse3_click_exit  &mouse2_click_exit  &trans
-                &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mouse1_click_exit  &mouse3_click_exit  &mouse2_click_exit  &tog 5
-                &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mouse1_click_exit  &mouse3_click_exit  &mouse2_click_exit  &tog 5
+                &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
+                &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &tog 5
+                &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &tog 5
                 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans                                &trans
             >;
         };
