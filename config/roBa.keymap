@@ -47,7 +47,7 @@
         compatible = "zmk,input-listener";
         status = "okay";
 
-        input-events = <ZMK_INPUT_EVENT_MOUSE_BUTTON_STATE_CHANGED>;
+        input-events = <ZMK_INPUT_EVENT_MOUSE_BUTTON>;
 
         input-processors = <&zip_delayed_layer 0 1000>;
     };
