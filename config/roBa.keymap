@@ -37,8 +37,8 @@
 
 &trackball {
     /*
-     * ZIP方式(=zip_temp_layer)でAMLを実装するので、ドライバ側の automouse-layer は無効化推奨。
-     * ドライバAMLはシンプルで高度な条件分岐を持たないため。[3](https://github.com/kot149/zenn-contents/blob/main/articles/zmk-auto-mouse-layer.md)
+     * ZIP方式(=zip_temp_layer)でAMLを実装するので、ドライバ側 automouse-layer は無効化推奨。
+     * （二重AMLで競合しやすいため）
      */
     // automouse-layer = <4>;
 
@@ -47,6 +47,17 @@
 
 /
 {
+    /*
+     * PRE専用の temp-layer processor
+     * - require-prior-idle-ms: 直前にキー入力があった場合、一定時間は発動しない[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer)
+     * クリック直後にトラボの余韻入力で PRE が再点火するのを防ぐために入れる。
+     */
+    zip_temp_layer_pre: zip_temp_layer_pre {
+        compatible = "zmk,input-processor-temp-layer";
+        #input-processor-cells = <2>;
+        require-prior-idle-ms = <1200>; /* POST(1000ms)より少し長く */ /* [1](https://zmk.dev/docs/keymaps/input-processors/temp-layer) */
+    };
+
     combos {
         compatible = "zmk,combos";
 
@@ -96,19 +107,17 @@
 
         /*
          * PRE(Layer4) 上でのクリック:
-         *  - クリック(押下/解放)を送る
-         *  - 解放後に PRE (Layer4) を確実にOFF（ドラッグを壊さない）
+         *  - &mkp を引数付きで押下/解放
+         *  - 解放後に PRE(Layer4) をOFF（ドラッグを壊さないため release 待ち）
          */
         mkp_pre_and_exit: mkp_pre_and_exit {
             compatible = "zmk,behavior-macro-one-param";
             #binding-cells = <1>;
-        
             bindings =
                 <&macro_press   &macro_param_1to1 &mkp MACRO_PLACEHOLDER>,
                 <&macro_pause_for_release>,
                 <&macro_release &macro_param_1to1 &mkp MACRO_PLACEHOLDER>,
                 <&tog_off 4>;
-        
             label = "MKP_PRE_AND_EXIT";
         };
     };
@@ -133,7 +142,7 @@
         };
 
         /*
-         * toggle-mode = "off" で、指定レイヤをOFFにするだけのトグルを作る。[4](https://zmk.dev/docs/keymaps/behaviors/layers)
+         * toggle-mode="off" で指定レイヤをOFFにするだけの behavior を作る[3](https://zmk.dev/docs/keymaps/behaviors/layers)
          */
         tog_off: toggle_layer_off {
             compatible = "zmk,behavior-toggle-layer";
@@ -187,9 +196,9 @@
 
         /*
          * Layer 4: MOUSE (PRE)
-         * - トラボで入る（trackball_listener + zip_temp_layer）
-         * - マウスキーを押すまで待つ（実質無期限）
-         * - クリックは mkp_pre_and_exit にして、クリック後に PRE をOFF
+         * - トラボで入る（trackball_listener + zip_temp_layer_pre）
+         * - 「必ずクリックする」前提で実質待たせる（timeoutは超長）
+         * - クリックは mkp_pre_and_exit で PRE を確実にOFF
          */
         MOUSE {
             bindings = <
@@ -220,8 +229,8 @@
 
         /*
          * Layer 7: MOUSE_POST (POST)
-         * - クリック(&mkp)が来るたびに &mkp_input_listener の zip_temp_layer で 1秒延長[2](https://zmk.dev/docs/keymaps/behaviors/mouse-emulation)[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer)
-         * - クリックが来なければ 1秒で落ち、PRE は既にOFFなので default に戻る
+         * - クリック(&mkp)が来るたびに &mkp_input_listener の temp-layer で 1秒延長[2](https://zmk.dev/docs/keymaps/behaviors/mouse-emulation)[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer)
+         * - クリックが来なければ 1秒でOFF → defaultへ戻る
          */
         MOUSE_POST {
             bindings = <
@@ -236,17 +245,15 @@
 
 /*
  * ▼▼▼ ここは必ずトップレベル（/ { } の外） ▼▼▼
- * PRE(=Layer4) : トラボ入力でON、超長 timeout で実質「クリックまで待つ」
- * zip_temp_layer は「入力が来たらレイヤON、指定ms入力が無ければOFF」。[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer)
  */
+
+/* PRE: トラボ入力で Layer4 をON、timeoutは超長で「クリックまで待つ」 */
+/* zip_temp_layer は入力が無いと timeout 後にOFFになる[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer) */
 &trackball_listener {
-    input-processors = <&zip_temp_layer 4 86400000>; /* 24h */
+    input-processors = <&zip_temp_layer_pre 4 86400000>; /* 24h */
 };
 
-/*
- * POST(=Layer7) : クリック(&mkp)のたびに 1秒延長
- * &mkp_input_listener に input-processors を適用できる。[2](https://zmk.dev/docs/keymaps/behaviors/mouse-emulation)[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer)
- */
+/* POST: クリック(&mkp)のたびに Layer7 を 1000ms 維持＝1秒延長[2](https://zmk.dev/docs/keymaps/behaviors/mouse-emulation)[1](https://zmk.dev/docs/keymaps/input-processors/temp-layer) */
 &mkp_input_listener {
     input-processors = <&zip_temp_layer 7 1000>; /* 1s */
 };
