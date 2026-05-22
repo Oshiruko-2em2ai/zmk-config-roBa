@@ -41,7 +41,7 @@
     scroll-layers = <5>;
 };
 
- / {
+/ {
     // ★ マウスキー押下 → 1秒後に Layer0（押されるたびに延命）
     mouse_exit_listener: mouse_exit_listener {
         compatible = "zmk,input-listener";
