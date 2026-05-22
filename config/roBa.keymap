@@ -52,20 +52,6 @@
         input-processors = <&zip_delayed_layer 0 1000>;
     };
 
-    // ★ MOUSE レイヤー中に “マウスキー以外” が押されたら即 Layer0
-    non_mouse_exit_listener: non_mouse_exit_listener {
-        compatible = "zmk,input-listener";
-        status = "okay";
-
-        input-events = <ZMK_INPUT_EVENT_KEYCODE_STATE_CHANGED>;
-
-        // devicetree では数値コードで書く必要がある
-        // MB1=0x110 / MB2=0x111 / MB3=0x112
-        input-processors = <&zip_layer_if_not 0
-            0x110 0x111 0x112
-        >;
-    };
-
     // --- combos ---
     combos {
         compatible = "zmk,combos";
