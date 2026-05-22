@@ -41,23 +41,35 @@
 };
 
 / {
-    // --- マウスクリック → 1秒延命 + レイヤー戻し ---
+    // ★ マウスキー押下 → 1秒延命（ZIP delayed_layer）
+    mouse_exit_listener: mouse_exit_listener {
+        compatible = "zmk,input-listener";
+        status = "okay";
+
+        // ★ 佑介の環境で確実に存在するイベント名
+        input-events = <ZMK_INPUT_EVENT_MOUSE_BUTTON>;
+
+        // ★ ZIP delayed_layer → 1秒後に layer0 に戻す
+        input-processors = <&zip_delayed_layer 0 1000>;
+    };
+
+    // --- マウスクリック（クリックだけ実行。戻しは ZIP がやる） ---
     mouse1_click_exit: mouse1_click_exit {
         compatible = "zmk,behavior-macro";
         #binding-cells = <0>;
-        bindings = <&mkp MB1>, <&zip_delayed_layer 0 1000>;
+        bindings = <&mkp MB1>;
     };
 
     mouse2_click_exit: mouse2_click_exit {
         compatible = "zmk,behavior-macro";
         #binding-cells = <0>;
-        bindings = <&mkp MB2>, <&zip_delayed_layer 0 1000>;
+        bindings = <&mkp MB2>;
     };
 
     mouse3_click_exit: mouse3_click_exit {
         compatible = "zmk,behavior-macro";
         #binding-cells = <0>;
-        bindings = <&mkp MB3>, <&zip_delayed_layer 0 1000>;
+        bindings = <&mkp MB3>;
     };
 
     // --- combos ---
