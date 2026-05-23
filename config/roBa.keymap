@@ -57,12 +57,12 @@ scroll-layers = <5>;
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
-        input-processors = <&zip_temp_layer 5 10000>;
+        input-processors = <&zip_temp_layer 4 10000>;
     };
 };
 
 &mkp_input_listener {
-    input-processors = <&zip_temp_layer 5 100000>;
+    input-processors = <&zip_temp_layer 4 100000>;
 };
 
 / {
