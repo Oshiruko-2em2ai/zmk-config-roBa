@@ -61,6 +61,10 @@ scroll-layers = <5>;
     };
 };
 
+&mkp_input_listener {
+    input-processors = <&zip_temp_layer 5 100000>;
+};
+
 / {
 combos {
 compatible = "zmk,combos";
