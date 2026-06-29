@@ -61,6 +61,7 @@ scroll-layers = <5>;
         compatible = "zmk,input-listener";
         device = <&trackball>;
 
+        min-drag-distance = <12>;
         input-processors = <&zip_temp_layer 4 100000>;
     };
 };
