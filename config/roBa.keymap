@@ -57,6 +57,17 @@ scroll-layers = <5>;
 };
 
 / {
+    zip_temp_layer_threshold: zip_temp_layer_threshold {
+        compatible = "zmk,input-processor-temp-layer-threshold";
+        #input-processor-cells = <2>;
+
+        threshold = <12>;
+        reset-timeout-ms = <200>;
+        require-prior-idle-ms = <200>;
+    };
+};
+
+/ {
     trackball_listener: trackball_listener {
         compatible = "zmk,input-listener";
         device = <&trackball>;
