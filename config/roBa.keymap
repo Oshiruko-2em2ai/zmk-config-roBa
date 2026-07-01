@@ -109,11 +109,6 @@
             bindings = <&sl 5>;
             key-positions = <31 32>;
         };
-
-        asdf {
-            bindings = <&none>;
-            key-positions = <7 8>;
-        };
     };
 
     macros {
