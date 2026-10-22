@@ -127,7 +127,7 @@
             bindings = <&mo>, <&to_layer_0>;
 
             #binding-cells = <2>;
-            tapping-term-ms = <200>;
+            tapping-term-ms = <0>;
         };
 
         hold_mkp_tap_kp: hold_mkp_tap_kp {
