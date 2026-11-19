@@ -74,7 +74,8 @@
     };
 };
 
-&mkp_input_listener { input-processors = <&zip_temp_layer 4 1000>; };
+// Removed: its 1s timer force-disabled layer 4 kept by zip_temp_layer_threshold, causing MB1 -> J
+// &mkp_input_listener { input-processors = <&zip_temp_layer 4 1000>; };
 
 / {
     combos {
